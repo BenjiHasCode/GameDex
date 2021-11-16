@@ -1,0 +1,278 @@
+---
+root: true
+ignorePatterns:
+  - projects/**/*
+overrides:
+  - files:
+      - "*.ts"
+    parserOptions:
+      project:
+        - tsconfig.json
+      createDefaultProgram: true
+    plugins:
+      - "@typescript-eslint"
+      - "@angular-eslint"
+      - rxjs
+    extends:
+      - plugin:@angular-eslint/recommended
+      - plugin:@angular-eslint/template/process-inline-templates
+      - eslint:recommended
+      - plugin:@typescript-eslint/recommended
+    rules:
+      no-var: warn
+      no-param-reassign:
+        - error
+        - props: true
+      "@typescript-eslint/prefer-readonly-parameter-types":
+        - 'off'
+        - checkParameterProperties: true
+          ignoreInferredTypes: false
+      "@typescript-eslint/no-explicit-any": warn
+      no-unused-vars: 'off'
+      "@typescript-eslint/no-unused-vars":
+        - warn
+        - argsIgnorePattern: "^_"
+      "@typescript-eslint/prefer-nullish-coalescing": warn
+      "@typescript-eslint/prefer-readonly": error
+      "@typescript-eslint/no-unsafe-member-access": error
+      "@typescript-eslint/no-unsafe-call": error
+      "@typescript-eslint/no-empty-function": warn
+      "@angular-eslint/no-empty-lifecycle-method": warn
+      "@typescript-eslint/explicit-function-return-type":
+        - warn
+        - allowExpressions: true
+      "@angular-eslint/directive-selector":
+        - warn
+        - type: attribute
+          prefix: nt
+          style: camelCase
+      "@angular-eslint/component-selector":
+        - warn
+        - type: element
+          prefix: nt
+          style: kebab-case
+      rxjs/finnish:
+        - warn
+        - functions: true
+          methods: true
+          names:
+            "^(canActivate|canActivateChild|canDeactivate|canLoad|intercept|resolve|validate|valueChanges)$": false
+          parameters: true
+          properties: true
+          strict: false
+          types:
+            "^(EventEmitter|.*Subject)$": false
+          variables: true
+      rxjs/no-exposed-subjects:
+        - warn
+        - allowProtected: true
+      rxjs/no-ignored-replay-buffer:
+        - error
+      rxjs/no-internal:
+        - warn
+      rxjs/no-nested-subscribe:
+        - warn
+      rxjs/no-subject-unsubscribe:
+        - warn
+      rxjs/no-unbound-methods:
+        - warn
+      rxjs/no-unsafe-subject-next:
+        - warn
+      rxjs/prefer-observer:
+        - warn
+      rxjs/no-unsafe-takeuntil:
+        - warn
+      rxjs/no-sharereplay:
+        - warn
+        - allowConfig: true
+      rxjs/suffix-subjects:
+        - warn
+        - parameters: true
+          properties: true
+          suffix: Subject
+          types:
+            "^(EventEmitter|Destroyer)$": false
+          variables: true
+      array-callback-return: warn
+      arrow-body-style:
+        - warn
+        - as-needed
+      arrow-spacing:
+        - warn
+        - before: true
+          after: true
+      curly:
+        - warn
+        - multi-line
+      complexity: warn
+      dot-location:
+        - warn
+        - property
+      eol-last:
+        - warn
+        - always
+      generator-star-spacing:
+        - warn
+        - before: true
+          after: false
+      no-constant-condition:
+        - warn
+        - checkLoops: false
+      no-lonely-if: warn
+      no-multiple-empty-lines:
+        - warn
+        - max: 2
+          maxEOF: 1
+      no-multi-spaces:
+        - warn
+        - ignoreEOLComments: false
+      no-self-compare: warn
+      no-tabs: warn
+      no-trailing-spaces: warn
+      no-useless-computed-key: warn
+      no-whitespace-before-property: warn
+      no-useless-return: warn
+      prefer-arrow-callback: warn
+      no-duplicate-imports: warn
+      no-useless-concat: warn
+      prefer-template: warn
+      object-shorthand:
+        - warn
+        - methods
+      operator-linebreak:
+        - warn
+        - before
+      padded-blocks:
+        - warn
+        - never
+      prefer-const: warn
+      prefer-numeric-literals: warn
+      prefer-rest-params: warn
+      prefer-spread: warn
+      radix: warn
+      yoda: warn
+      no-undef-init: warn
+      rest-spread-spacing:
+        - warn
+        - never
+      semi-spacing:
+        - warn
+        - before: false
+          after: true
+      space-in-parens:
+        - warn
+        - never
+      space-unary-ops: warn
+      spaced-comment:
+        - warn
+        - always
+        - block:
+            balanced: true
+      symbol-description: warn
+      yield-star-spacing: warn
+      eqeqeq:
+        - error
+        - always
+      no-shadow: off
+      "@typescript-eslint/no-shadow": error
+      "@typescript-eslint/consistent-indexed-object-style": error
+      "@typescript-eslint/consistent-type-assertions":
+        - warn
+        - assertionStyle: as
+      "@typescript-eslint/consistent-type-definitions":
+        - warn
+        - interface
+      "@typescript-eslint/explicit-member-accessibility":
+        - warn
+        - accessibility: no-public
+      "@typescript-eslint/explicit-module-boundary-types":
+        - warn
+        - allowArgumentsExplicitlyTypedAsAny: true
+      "@typescript-eslint/member-delimiter-style":
+        - warn
+        - multiline:
+            delimiter: semi
+            requireLast: true
+          singleline:
+            delimiter: comma
+            requireLast: false
+          multilineDetection: brackets
+      "@typescript-eslint/naming-convention":
+        - warn
+        - selector: variableLike
+          format:
+            - camelCase
+          leadingUnderscore: allow
+        - selector:
+            - variable
+          modifiers:
+            - readonly
+            - static
+          format:
+            - UPPER_CASE
+        - selector:
+            - variableLike
+          modifiers:
+            - exported
+          format:
+        - selector:
+            - variableLike
+          modifiers:
+            - const
+          format:
+        - selector: typeLike
+          format:
+            - PascalCase
+        - selector: interface
+          format:
+            - PascalCase
+          custom:
+            regex: "^I[A-Z]"
+            match: false
+      "@typescript-eslint/no-base-to-string": warn
+      "@typescript-eslint/no-extraneous-class":
+        - warn
+        - allowEmpty: true
+      "@typescript-eslint/prefer-includes": warn
+      "@typescript-eslint/prefer-optional-chain": warn
+      "@typescript-eslint/prefer-reduce-type-parameter": warn
+      "@typescript-eslint/prefer-string-starts-ends-with": warn
+      "@typescript-eslint/require-array-sort-compare": warn
+      "@typescript-eslint/strict-boolean-expressions": warn
+      dot-notation: off
+      "@typescript-eslint/dot-notation": warn
+      brace-style: 'off'
+      "@typescript-eslint/brace-style": warn
+      comma-dangle: 'off'
+      "@typescript-eslint/comma-dangle": warn
+      comma-spacing: 'off'
+      "@typescript-eslint/comma-spacing": warn
+      func-call-spacing: 'off'
+      "@typescript-eslint/func-call-spacing": warn
+      keyword-spacing: 'off'
+      "@typescript-eslint/keyword-spacing": warn
+      no-useless-constructor: 'off'
+      "@typescript-eslint/no-useless-constructor":
+        - warn
+      quotes: 'off'
+      "@typescript-eslint/quotes":
+        - warn
+        - single
+      semi: 'off'
+      "@typescript-eslint/semi":
+        - warn
+      space-before-function-paren: 'off'
+      "@typescript-eslint/space-before-function-paren":
+        - warn
+        - anonymous: never
+          named: never
+          asyncArrow: always
+      space-infix-ops: 'off'
+      "@typescript-eslint/space-infix-ops":
+        - warn
+        - int32Hint: false
+  - files:
+      - "*.html"
+    extends:
+      - plugin:@angular-eslint/template/recommended
+    rules: { }
