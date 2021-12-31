@@ -1,0 +1,22 @@
+<span hidden>{{(game$ | async)}}</span>
+
+<div>
+  <h1 class="title">{{(developer$ | async)?.name}}</h1>
+
+  <div class="result-container">
+    <div class="game-icon" *ngFor="let game of games">
+      <a [routerLink]="['/games', game.id]">
+        <img src="{{game.background_image}}" alt="{{game.name}}" onerror="this.onerror=null;this.src='../../assets/temp.png';">
+        <div class="overlay" style="display: flex; justify-content: center; align-items: center;">
+          {{game.name}}
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div id="seeMore">
+    <button mat-flat-button color="primary" style="width: 100px; height: 50px;" (click)="loadMore()">See more</button>
+  </div>
+</div>
+
+<mat-toolbar style="position: static; bottom: 0; height: 150px; background-color: white"></mat-toolbar>

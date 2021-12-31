@@ -11,7 +11,7 @@ import javax.ws.rs.ApplicationPath;
 public class JerseyApplicationConfig extends ResourceConfig {
     public JerseyApplicationConfig() {
         System.out.println("JerseyApplicationConfig booting");
-        // Finds all JAX-RS web service in the wabapi package
+        // Finds all JAX-RS web service in the webapi package
         packages(GameDexApplication.class.getPackage() + ".webapi");
     }
 }
