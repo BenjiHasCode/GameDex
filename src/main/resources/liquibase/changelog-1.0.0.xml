@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <!-- Core tables -->
+        <!-- Game -->
+    <changeSet id="1.0.0:CREATE:GAME" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME">
+            <column name="GAME_ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(2500)"/>
+            <column name="METACRITIC" type="int"/>
+            <column name="RELEASED" type="varchar(24)"/>
+            <column name="PLAYTIME" type="int"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME"/>
+        </rollback>
+    </changeSet>
+        <!-- Publisher -->
+    <changeSet id="1.0.0:CREATE:PUBLISHER" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="PUBLISHER">
+            <column name="PUBLISHER_ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(1024)"/> <!-- Perhaps make even shorter -->
+        </createTable>
+        <rollback>
+            <dropTable tableName="PUBLISHER"/>
+        </rollback>
+    </changeSet>
+        <!-- Developer -->
+    <changeSet id="1.0.0:CREATE:DEVELOPER" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="DEVELOPER">
+            <column name="DEVELOPER_ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(1024)"/> <!-- Perhaps make even shorter -->
+        </createTable>
+        <rollback>
+            <dropTable tableName="DEVELOPER"/>
+        </rollback>
+    </changeSet>
+        <!-- Platform -->
+    <changeSet id="1.0.0:CREATE:PLATFORM" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="PLATFORM">
+            <column name="PLATFORM_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="PLATFORM"/>
+        </rollback>
+    </changeSet>
+        <!-- Store -->
+    <changeSet id="1.0.0:CREATE:STORE" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="STORE">
+            <column name="STORE_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOMAIN" type="varchar(64)"/>
+            <column name="GAMES_COUNT" type="int"/>
+            <column name="DESCRIPTION" type="varchar(1024)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="STORE"/>
+        </rollback>
+    </changeSet>
+        <!-- Genre -->
+    <changeSet id="1.0.0:CREATE:GENRE" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GENRE">
+            <column name="GENRE_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GENRE"/>
+        </rollback>
+    </changeSet>
+        <!-- Tag -->
+    <changeSet id="1.0.0:CREATE:TAG" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="TAG">
+            <column name="TAG_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="TAG"/>
+        </rollback>
+    </changeSet>
+        <!-- Screenshot -->
+    <changeSet id="1.0.0:CREATE:SCREENSHOT" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="SCREENSHOT">
+            <column name="SCREENSHOT_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="URL" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GAME_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="SCREENSHOT"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Join tables -->
+        <!-- Game_Developer -->
+    <changeSet id="1.0.0:CREATE:GAME_DEVELOPER" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_DEVELOPER">
+            <column name="GAME_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID"/>
+            </column>
+            <column name="DEVELOPER_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="DEVELOPER_ID" referencedTableName="DEVELOPER" referencedColumnNames="DEVELOPER_ID"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_DEVELOPER"/>
+        </rollback>
+    </changeSet>
+        <!-- Game_Tag -->
+    <changeSet id="1.0.0:CREATE:GAME_TAG" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_TAG">
+            <column name="GAME_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID"/>
+            </column>
+            <column name="TAG_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="TAG_ID" referencedTableName="TAG" referencedColumnNames="TAG_ID"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_TAG"/>
+        </rollback>
+    </changeSet>
+        <!-- Game_Genre -->
+    <changeSet id="1.0.0:CREATE:GAME_GENRE" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_GENRE">
+            <column name="GAME_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID"/>
+            </column>
+            <column name="GENRE_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="GENRE_ID" referencedTableName="GENRE" referencedColumnNames="GENRE_ID"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_GENRE"/>
+        </rollback>
+    </changeSet>
+        <!-- Game_Store -->
+    <changeSet id="1.0.0:CREATE:GAME_STORE" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_STORE">
+            <column name="GAME_STORE_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="GAME_ID" type="bigint">
+                <constraints foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID"/>
+            </column>
+            <column name="STORE_ID" type="bigint">
+                <constraints foreignKeyName="STORE_ID" referencedTableName="STORE" referencedColumnNames="STORE_ID"/>
+            </column>
+            <column name="URL" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_STORE"/>
+        </rollback>
+    </changeSet>
+        <!-- Game_Platform -->
+    <changeSet id="1.0.0:CREATE:GAME_PLATFORM" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_PLATFORM">
+            <column name="GAME_ID" type="bigint">
+                <constraints foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID" nullable="false"/>
+            </column>
+            <column name="PLATFORM_ID" type="bigint">
+                <constraints foreignKeyName="PLATFORM_ID" referencedTableName="PLATFORM" referencedColumnNames="PLATFORM_ID" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_PLATFORM"/>
+        </rollback>
+    </changeSet>
+    <!-- Game_Publisher -->
+    <changeSet id="1.0.0:CREATE:GAME_PUBLISHER" author="Benjamin Gustavsen" context="default">
+        <createTable tableName="GAME_PUBLISHER">
+            <column name="GAME_ID" type="bigint">
+                <constraints foreignKeyName="GAME_ID" referencedTableName="GAME" referencedColumnNames="GAME_ID" nullable="false"/>
+            </column>
+            <column name="PUBLISHER_ID" type="bigint">
+                <constraints foreignKeyName="PUBLISHER_ID" referencedTableName="PUBLISHER" referencedColumnNames="PUBLISHER_ID" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="GAME_PUBLISHER"/>
+        </rollback>
+    </changeSet>
+
+    <!-- Tag database version -->
+    <changeSet id="VERSION-1.0.0" author="Benjamin Gustavsen" context="default">
+        <tagDatabase tag="VERSION-1.0.0"/>
+    </changeSet>
+</databaseChangeLog>

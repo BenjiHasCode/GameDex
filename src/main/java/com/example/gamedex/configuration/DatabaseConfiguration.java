@@ -33,7 +33,7 @@ public class DatabaseConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(springDataSource());
-        // Finds all JPA Entities in the domainmodel package
+        // Finds all JPA Entities in the model package
         em.setPackagesToScan(GameDexApplication.class.getPackageName() + ".model");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

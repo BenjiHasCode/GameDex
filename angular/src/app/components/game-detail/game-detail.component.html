@@ -1,0 +1,92 @@
+<div class="game-container">
+  <div style="float:left; width: 251px">
+    <img src="{{ (game$ | async)?.background_image}}" alt="cover" class="cover">
+  </div>
+
+  <div class="game-panel">
+    <h1 id="game-header">{{ (game$ | async)?.name }}</h1>
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Info">
+        <h1 class="subTitle">Developers</h1>
+        <mat-chip-list>
+          <mat-chip *ngFor="let developer of (game$ | async)?.developers; index as i" selected [color]="availableColors[i % availableColors.length]">
+            <a [routerLink]="['/developers', developer.id]" [state]="{developer: developer}">
+              {{developer.name}}
+            </a>
+          </mat-chip>
+        </mat-chip-list>
+        <h1 class="subTitle">Platforms</h1>
+        <mat-chip-list>
+          <mat-chip *ngFor="let platform of (game$ | async)?.platforms; index as i" selected [color]="availableColors[i % availableColors.length]">
+            <a [routerLink]="['/platforms', platform.id]">
+              {{platform.name}}
+            </a>
+          </mat-chip>
+        </mat-chip-list>
+        <h1 class="subTitle">Metacritic: <span style="font-style: italic">{{(game$ | async)?.metacritic}}</span></h1>
+        <h1 class="subTitle">Description</h1>
+        <p>
+          {{ (game$ | async)?.description}}
+        </p>
+        <h1 class="subTitle">Genres</h1>
+        <mat-chip-list>
+          <mat-chip *ngFor="let genre of (game$ | async)?.genres; index as i" selected [color]="availableColors[i % availableColors.length]">
+            <a [routerLink]="['/genres', genre.id]">
+              {{genre.name}}
+            </a>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-tab>
+      <mat-tab label="Tags">
+        <br>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of (game$ | async)?.tags; index as i" selected [color]="availableColors[i % availableColors.length]">
+            <a [routerLink]="['/tags', tag.id]">
+              {{tag.name}}
+            </a>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-tab>
+      <mat-tab label="Stores">
+        <br>
+        <mat-chip-list>
+          <mat-chip *ngFor="let gameStore of (game$ | async)?.stores; index as i" selected [color]="availableColors[i % availableColors.length]">
+            {{gameStore.store.name}}
+          </mat-chip>
+        </mat-chip-list>
+
+        <div *ngIf="storeAmount == 0">
+          <p>Unfortunately, we don't know of any stores</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <br>
+
+  <div class="screenshot-container" *ngIf="screenshotAmount !== 0">
+    <h1>Screenshots</h1>
+    <div class="slideshow-container">
+      <div class="mySlides fade"  *ngFor="let screenshot of (game$ | async)?.screenshots; index as i">
+        <div class="numbertext">{{i+1}} / {{screenshotAmount}}</div>
+        <img src="{{screenshot.url}}" alt="screenshot {{i}}" class="screenshot">
+      </div>
+
+      <a class="prev" (click)="plusSlides(-1)">&#10094;</a>
+      <a class="next" (click)="plusSlides(1)">&#10095;</a>
+    </div>
+    <br>
+
+    <div class="dot-container">
+      <span *ngFor="let screenshot of (game$ | async)?.screenshots; index as i" class="dot" (click)="currentSlide(i+1)"></span>
+    </div>
+  </div>
+
+  <!--
+  <div class="similar-container">
+    <h1 class="header" style="text-align: center">Similar Games</h1>
+  </div>
+  -->
+</div>
+
+
+
