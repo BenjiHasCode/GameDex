@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, of} from "rxjs";
 import {Game} from "../../types/game";
 
@@ -8,9 +8,6 @@ import {Game} from "../../types/game";
 })
 export class GameService {
   private readonly gameUrl = '/rest/games';
-  httpOptions = {
-    headers: new HttpHeaders({'Content-type': 'application/json'})
-  };
 
   constructor(private readonly http: HttpClient) { }
 
