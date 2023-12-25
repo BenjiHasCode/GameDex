@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "PLATFORM")
 @JsonDeserialize(using = Platform.Deserializer.class)
+@Data
 public class Platform {
     @Id
     @Column(name = "PLATFORM_ID")
@@ -25,39 +27,7 @@ public class Platform {
     @JsonIgnore
     private Set<Game> games;
 
-    public Platform() {
-    }
-
-    public Platform(Long id, String name, Set<Game> games) {
-        this.id = id;
-        this.name = name;
-        this.games = games;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(Set<Game> games) {
-        this.games = games;
-    }
-
+    // This can be fazed out with the external api
     static class Deserializer extends JsonDeserializer<Platform> {
 
         @Override
