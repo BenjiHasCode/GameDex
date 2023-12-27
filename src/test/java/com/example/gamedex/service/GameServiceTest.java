@@ -22,34 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = GameDexApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GameServiceTest {
-    @Container
-    public static GenericContainer<?> postGis = new GenericContainer<>("postgis/postgis:12-3.1-alpine")
-            .withExposedPorts(5432)
-            .withEnv("POSTGRES_DB", "GAMEDEX")
-            .withEnv("POSTGRES_USER", "test")
-            .withEnv("POSTGRES_PASSWORD", "test");
-
     @Inject
     private GameService gameService;
     @LocalServerPort
     int randomServerPort;
-
-    @BeforeAll
-    static void setUpBeforeClass() {
-        assertNotNull(postGis);
-        postGis.start();
-        System.out.println(postGis.getFirstMappedPort());
-        System.setProperty("spring.datasource.jdbcUrl",
-                "jdbc:postgresql://localhost:" + postGis.getFirstMappedPort() + "/GAMEDEX");
-        System.setProperty("hibernate.show_sql", "true");
-        System.setProperty("hibernate.format_sql", "true");
-        System.setProperty("spring.liquibase.contexts", "default");
-    }
-
-    @Test
-    void shouldNotFailWhenInjected() {
-        assertNotNull(gameService);
-    }
 
     @Test
     public void findTest() {

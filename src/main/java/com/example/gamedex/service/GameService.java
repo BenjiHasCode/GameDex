@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 public class GameService {
     private final GameRepository gameRepository;
-    private final String url = "https://api.rawg.io/api/games/";
+    private final String url = "https://api.rawg.io/api/games";
     private final String key = "9de4d4ed334b45349c288a628dd2b6ae";
 
     @Inject
@@ -25,7 +25,7 @@ public class GameService {
     // GET
     @Transactional
     public Game find(long id) {
-        String uri = url + id + "?key=" + key;
+        String uri = url + "/" + id + "?key=" + key;
 
         // Get response from external api
         RestTemplate restTemplate = new RestTemplate();
@@ -34,7 +34,7 @@ public class GameService {
         // connect to external api
         try {
             result = restTemplate.getForObject(uri, Game.class);
-            Set<Screenshot> screenshots = restTemplate.getForObject(url + id + "/screenshots?key=" + key, Game.class).getScreenshots();
+            Set<Screenshot> screenshots = restTemplate.getForObject(url + "/" + id + "/screenshots?key=" + key, Game.class).getScreenshots();
 
             if (result != null && screenshots != null) {
                 result.setScreenshots(screenshots);
@@ -43,7 +43,6 @@ public class GameService {
                     s.setGame(result);
                 }
 
-                System.out.println(result.getDescription().length());
                 //save backup
                 gameRepository.save(result);
             }
@@ -52,18 +51,18 @@ public class GameService {
                 result = gameRepository.fetch(id);
             }
         } catch (Exception e) {
-            //contact local if no connection
+            // fetch backup
             result = gameRepository.fetch(id);
         }
 
         return result;
     }
 
-    // GET ALL
+    // GET ALL  // remove
     // We find all results with the given name
     public Set<Game> findAll(String name, int page) {
-        String uri = "https://api.rawg.io/api/games?" +
-                "key=9de4d4ed334b45349c288a628dd2b6ae" +
+        String uri = url +
+                "?key=" + key +
                 "&page_size=24&page=" + page +
                 "&search=" + name;
 
@@ -80,15 +79,14 @@ public class GameService {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // Check locally
+            // fetch backup
             result = gameRepository.findAllByName(name);
         }
         return result;
     }
 
     public Set<Game> findAllByGenre(Long id, int page) {
-        String uri = "https://api.rawg.io/api/games?" +
-                "key=9de4d4ed334b45349c288a628dd2b6ae" +
+        String uri = url + "?key=" + key +
                 "&page_size=24&page=" + page +
                 "&genres=" + id;
 
@@ -99,21 +97,20 @@ public class GameService {
             // Get response from external api
             result = restTemplate.getForObject(uri, Search.class).getResults();
 
-            // check local if null
+            // if null, fetch backup
             if (result == null) {
                 result = gameRepository.findAllByGenre(id); // pages are 0 indexed locally but external api is 1 based
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // Check locally
+            // fetch backup
             result = gameRepository.findAllByGenre(id);
         }
         return result;
     }
 
     public Set<Game> findAllByTag(Long id, int page) {
-        String uri = "https://api.rawg.io/api/games?" +
-                "key=9de4d4ed334b45349c288a628dd2b6ae" +
+        String uri = url + "?key=" + key +
                 "&page_size=24&page=" + page +
                 "&tags=" + id;
 
@@ -124,21 +121,20 @@ public class GameService {
             // Get response from external api
             result = restTemplate.getForObject(uri, Search.class).getResults();
 
-            // check local if null
+            // if null, fetch backup
             if (result == null) {
                 result = gameRepository.findAllByTag(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // Check locally
+            // fetch backup
             result = gameRepository.findAllByTag(id);
         }
         return result;
     }
 
     public Set<Game> findAllByDeveloper(Long id, int page) {
-        String uri = "https://api.rawg.io/api/games?" +
-                "key=9de4d4ed334b45349c288a628dd2b6ae" +
+        String uri = url + "?key=" + key +
                 "&page_size=24&page=" + page +
                 "&developers=" + id;
 
@@ -149,21 +145,20 @@ public class GameService {
             // Get response from external api
             result = restTemplate.getForObject(uri, Search.class).getResults();
 
-            // check local if null
+            // if null, fetch backup
             if (result == null) {
                 result = gameRepository.findAllByDeveloper(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // Check locally
+            // fetch backup
             result = gameRepository.findAllByDeveloper(id);
         }
         return result;
     }
 
     public Set<Game> findAllByPlatform(Long id, int page) {
-        String uri = "https://api.rawg.io/api/games?" +
-                "key=9de4d4ed334b45349c288a628dd2b6ae" +
+        String uri = url + "?key=" + key +
                 "&page_size=24&page=" + page +
                 "&platforms=" + id;
 
@@ -176,13 +171,13 @@ public class GameService {
             if (s != null) {
                 result = restTemplate.getForObject(uri, Search.class).getResults();
             }
-            // check local if null
+            // if null, fetch backup
             if (result == null) {
                 result = gameRepository.findAllByPlatform(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // Check locally
+            // fetch backup
             result = gameRepository.findAllByPlatform(id);
         }
         return result;

@@ -26,18 +26,15 @@ public class GameApi {
     public Response findById(@PathParam("id") long id) {
         Game game = gameService.find(id);
 
-        Response.Status status;
-        if (game != null) {
-            status = Response.Status.OK;
-        } else {
-            status = Response.Status.NOT_FOUND;
-        }
+        Response.Status status = (game != null) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
                 .status(status)
                 .entity(game)
                 .build();
     }
 
+    // TODO migrate this out
     @GET
     @Produces("application/json")
     @Transactional
@@ -56,6 +53,7 @@ public class GameApi {
     @Path("/genre={id}&page={page}")
     public Response findAllByGenre(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByGenre(id, page);
+        // todo check what status to return???
         return Response
                 .status(Response.Status.OK)
                 .entity(games)
@@ -68,6 +66,7 @@ public class GameApi {
     @Path("/tag={id}&page={page}")
     public Response findAllByTag(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByTag(id, page);
+        // todo check what status to return???
         return Response
                 .status(Response.Status.OK)
                 .entity(games)
@@ -80,6 +79,7 @@ public class GameApi {
     @Path("/developer={id}&page={page}")
     public Response findAllByDeveloper(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByDeveloper(id, page);
+        // todo check what status to return???
         return Response
                 .status(Response.Status.OK)
                 .entity(games)
@@ -92,6 +92,7 @@ public class GameApi {
     @Path("/platform={id}&page={page}")
     public Response findAllByPlatform(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByPlatform(id, page);
+        // todo check what status to return???
         return Response
                 .status(Response.Status.OK)
                 .entity(games)

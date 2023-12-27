@@ -19,34 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = GameDexApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GameApiTest {
-    @Container
-    public static GenericContainer<?> postGis = new GenericContainer<>("postgis/postgis:12-3.1-alpine")
-            .withExposedPorts(5432)
-            .withEnv("POSTGRES_DB", "GAMEDEX")
-            .withEnv("POSTGRES_USER", "test")
-            .withEnv("POSTGRES_PASSWORD", "test");
-
     @Inject
     private GameApi gameApi;
-    @LocalServerPort
-    int randomServerPort;
-
-    @BeforeAll
-    static void setUpBeforeClass() {
-        assertNotNull(postGis);
-        postGis.start();
-        System.out.println(postGis.getFirstMappedPort());
-        System.setProperty("spring.datasource.jdbcUrl",
-                "jdbc:postgresql://localhost:" + postGis.getFirstMappedPort() + "/GAMEDEX");
-        System.setProperty("hibernate.show_sql", "true");
-        System.setProperty("hibernate.format_sql", "true");
-        System.setProperty("spring.liquibase.contexts", "default");
-    }
-
-    @Test
-    void shouldNotFailWhenInjected() {
-        assertNotNull(gameApi);
-    }
 
     @Test
     public void findByIdTest() {
@@ -60,51 +34,70 @@ public class GameApiTest {
 
     @Test
     public void findAllTest() {
+        // Arrange
         String name = "Grand Theft Auto";
         int page = 1;
 
+        // Act
         Response response = gameApi.findAll(name, page);
+
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
     public void findAllByGenreTest() {
+        // Arrange
         long id = 1;
         int page = 1;
 
+        // Act
         Response response = gameApi.findAllByGenre(id, page);
+
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
     public void findAllByTagTest() {
+        // Arrange
         long id = 1;
         int page = 1;
 
+        // Act
         Response response = gameApi.findAllByTag(id, page);
+
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatus());
-
     }
 
     @Test
     public void findAllByDeveloperTest() {
+        // Arrange
         long id = 1;
         int page = 1;
 
+        // Act
         Response response = gameApi.findAllByDeveloper(id, page);
+
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
     public void findAllByPlatformTest() {
+        // Arrange
         long id = 1;
         int page = 1;
 
+        // Act
         Response response = gameApi.findAllByPlatform(id, page);
+
+        // Assert
         assertNotNull(response);
         assertEquals(200, response.getStatus());
     }
