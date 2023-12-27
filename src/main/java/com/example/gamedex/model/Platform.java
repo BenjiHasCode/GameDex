@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -15,7 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "PLATFORM")
 @JsonDeserialize(using = Platform.Deserializer.class)
-@Data
+@Getter @Setter
+@NoArgsConstructor
 public class Platform {
     @Id
     @Column(name = "PLATFORM_ID")

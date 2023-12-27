@@ -1,12 +1,15 @@
 package com.example.gamedex.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "GAME_STORE")
-@Data
+@Getter @Setter
+@NoArgsConstructor
 public class GameStore {
     @Id
     @Column(name = "GAME_STORE_ID")
