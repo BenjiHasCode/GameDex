@@ -5,8 +5,12 @@ dotenv.config({ path: './.env' });
 
 const app = express();
 
-app.get("/", (req, res) => {
-    res.send("Hello, World!");
+app.get("/games", (req, res) => {
+    if(req.query.name && req.query.page) {
+        res.send("yes");
+    }
+    console.log(req.query);
+    res.send("no");
 });
 
 const PORT = process.env.port || 3000;
