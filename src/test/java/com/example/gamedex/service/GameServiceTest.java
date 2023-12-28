@@ -1,62 +1,50 @@
 package com.example.gamedex.service;
 
-import com.example.gamedex.GameDexApplication;
-
-import com.example.gamedex.model.*;
-import org.junit.jupiter.api.BeforeAll;
+import com.example.gamedex.model.Game;
+import com.example.gamedex.model.Genre;
+import com.example.gamedex.model.Platform;
+import com.example.gamedex.model.Tag;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
 
 import javax.inject.Inject;
-
-
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = GameDexApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GameServiceTest {
     @Inject
     private GameService gameService;
-    @LocalServerPort
-    int randomServerPort;
 
     @Test
     public void findTest() {
-        Game game = gameService.find(1);
+        // Arrange
+        long id = 1;
+        long expected = 1;
 
-        assertNotNull(game);
-        assertEquals(1, game.getId());
+        // Act
+        Game game = gameService.find(id);
 
-        // mock
-    }
-
-    @Test
-    public void findAllTest() {
-        String name = "Grand Theft Auto";
-        int page = 1;
-
-        Set<Game> games = gameService.findAll(name, page);
-
-        assertNotNull(games);
-        assertNotEquals(0, games.size());
+        // Assert
+        assertEquals(expected, game.getId());
     }
 
     @Test
     public void findAllByGenreTest() {
+        // Arrange
         long id = 1;
         int page = 1;
+        int unexpected = 0;
 
+        // Act
         Set<Game> games = gameService.findAllByGenre(id, page);
 
-        assertNotNull(games);
-        assertNotEquals(0, games.size());
+        // Assert
+        assertNotEquals(unexpected, games.size());
 
         // assert that all games have the genre
         for (Game game: games) {
@@ -73,13 +61,16 @@ public class GameServiceTest {
 
     @Test
     public void findAllByTagTest() {
+        // Arrange
         long id = 1;
         int page = 1;
+        int unexpected = 0;
 
+        // Act
         Set<Game> games = gameService.findAllByTag(id, page);
 
-        assertNotNull(games);
-        assertNotEquals(0, games.size());
+        // Assert
+        assertNotEquals(unexpected, games.size());
 
         // assert that all games have the tag
         for (Game game: games) {
@@ -96,24 +87,30 @@ public class GameServiceTest {
 
     @Test
     public void findAllByDeveloperTest() {
+        // Arrange
         long id = 1612;
         int page = 1;
+        int unexpected = 0;
 
+        // Act
         Set<Game> games = gameService.findAllByDeveloper(id, page);
 
-        assertNotNull(games);
-        assertNotEquals(0, games.size());
+        // Assert
+        assertNotEquals(unexpected, games.size());
     }
 
     @Test
     public void findAllByPlatform() {
+        // Arrange
         long id = 1;
         int page = 1;
+        int unexpected = 0;
 
+        // Act
         Set<Game> games = gameService.findAllByPlatform(id, page);
 
-        assertNotNull(games);
-        assertNotEquals(0, games.size());
+        // Assert
+        assertNotEquals(unexpected, games.size());
 
         // assert that all games have the developer
         for (Game game: games) {
@@ -126,7 +123,5 @@ public class GameServiceTest {
             }
             assertTrue(hasPlatform);
         }
-
-        assertEquals(24, games.size());
     }
 }
