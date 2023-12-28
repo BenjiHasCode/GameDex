@@ -41,8 +41,11 @@ public class GameApi {
     @Path("/search={name}&page={page}")
     public Response findAll(@PathParam("name") String name, @PathParam("page") int page) {
         Set<Game> games = gameService.findAll(name, page);
+
+        Response.Status status = (games != null) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
-                .status(Response.Status.OK)
+                .status(status)
                 .entity(games)
                 .build();
     }
@@ -53,9 +56,11 @@ public class GameApi {
     @Path("/genre={id}&page={page}")
     public Response findAllByGenre(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByGenre(id, page);
-        // todo check what status to return???
+
+        Response.Status status = (games.size() > 0) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
-                .status(Response.Status.OK)
+                .status(status)
                 .entity(games)
                 .build();
     }
@@ -66,9 +71,11 @@ public class GameApi {
     @Path("/tag={id}&page={page}")
     public Response findAllByTag(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByTag(id, page);
-        // todo check what status to return???
+
+        Response.Status status = (games.size() > 0) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
-                .status(Response.Status.OK)
+                .status(status)
                 .entity(games)
                 .build();
     }
@@ -79,9 +86,11 @@ public class GameApi {
     @Path("/developer={id}&page={page}")
     public Response findAllByDeveloper(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByDeveloper(id, page);
-        // todo check what status to return???
+
+        Response.Status status = (games.size() > 0) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
-                .status(Response.Status.OK)
+                .status(status)
                 .entity(games)
                 .build();
     }
@@ -92,9 +101,11 @@ public class GameApi {
     @Path("/platform={id}&page={page}")
     public Response findAllByPlatform(@PathParam("id") Long id, @PathParam("page") int page) {
         Set<Game> games = gameService.findAllByPlatform(id, page);
-        // todo check what status to return???
+
+        Response.Status status = (games.size() > 0) ? Response.Status.OK : Response.Status.NOT_FOUND;
+
         return Response
-                .status(Response.Status.OK)
+                .status(status)
                 .entity(games)
                 .build();
     }
