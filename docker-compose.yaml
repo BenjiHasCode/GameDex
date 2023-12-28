@@ -6,7 +6,7 @@ services:
       - 5432:5432
     environment:
       POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
+      POSTGRES_PASSWORD: test #This should really be changed lol
       POSTGRES_DB: GAMEDEX
       PG_DB: GAMEDEX
   backend:
@@ -21,3 +21,28 @@ services:
       - 4200:80
     links:
       - backend
+  search:
+    image: getmeili/meilisearch:v1.5
+    restart: always
+    container_name: search
+    environment:
+      - MEILI_HTTP_PAYLOAD_SIZE_LIMIT=1048576000 # 1 gigabyte
+    volumes:
+      - meili:/data.ms
+    ports:
+      - 7700:7700
+    networks:
+      - gamedex
+  meilisync:
+    platform: linux/x86_64
+    image: long2ice/meilisync
+    volumes:
+      - ./config.yml:/meilisync/config.yml
+
+networks:
+  gamedex:
+    external: false
+
+volumes:
+  meili:
+    driver: local

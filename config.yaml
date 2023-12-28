@@ -1,0 +1,5 @@
+meilisearch:
+  api_url: http://host.docker.internal:7700/
+  api_key: 'MEILISEARCH_API_KEY'  #hmmmm????
+  insert_size: 1000
+  insert_interval: 10
