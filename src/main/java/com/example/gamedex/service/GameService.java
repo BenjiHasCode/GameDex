@@ -46,7 +46,7 @@ public class GameService {
                 //save backup
                 gameRepository.save(result);
             }
-            // if result is null (external didn't have resource, check local
+            // if result is null (external didn't have resource, check local)
             else {
                 result = gameRepository.fetch(id);
             }
@@ -58,7 +58,7 @@ public class GameService {
         return result;
     }
 
-    // GET ALL  // remove
+    // GET ALL  // todo remove
     // We find all results with the given name
     public Set<Game> findAll(String name, int page) {
         String uri = url +
@@ -90,22 +90,11 @@ public class GameService {
                 "&page_size=24&page=" + page +
                 "&genres=" + id;
 
-        RestTemplate restTemplate = new RestTemplate();
-        Set<Game> result;
+        Set<Game> result = findAllRemote(uri);
 
-        try {
-            // Get response from external api
-            result = restTemplate.getForObject(uri, Search.class).getResults();
-
-            // if null, fetch backup
-            if (result == null) {
-                result = gameRepository.findAllByGenre(id); // pages are 0 indexed locally but external api is 1 based
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            // fetch backup
+        if (result == null)
             result = gameRepository.findAllByGenre(id);
-        }
+
         return result;
     }
 
@@ -114,22 +103,11 @@ public class GameService {
                 "&page_size=24&page=" + page +
                 "&tags=" + id;
 
-        RestTemplate restTemplate = new RestTemplate();
-        Set<Game> result;
+        Set<Game> result = findAllRemote(uri);
 
-        try {
-            // Get response from external api
-            result = restTemplate.getForObject(uri, Search.class).getResults();
-
-            // if null, fetch backup
-            if (result == null) {
-                result = gameRepository.findAllByTag(id);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            // fetch backup
+        if (result == null)
             result = gameRepository.findAllByTag(id);
-        }
+
         return result;
     }
 
@@ -138,22 +116,11 @@ public class GameService {
                 "&page_size=24&page=" + page +
                 "&developers=" + id;
 
-        RestTemplate restTemplate = new RestTemplate();
-        Set<Game> result;
+        Set<Game> result = findAllRemote(uri);
 
-        try {
-            // Get response from external api
-            result = restTemplate.getForObject(uri, Search.class).getResults();
-
-            // if null, fetch backup
-            if (result == null) {
-                result = gameRepository.findAllByDeveloper(id);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            // fetch backup
+        if (result == null)
             result = gameRepository.findAllByDeveloper(id);
-        }
+
         return result;
     }
 
@@ -162,23 +129,26 @@ public class GameService {
                 "&page_size=24&page=" + page +
                 "&platforms=" + id;
 
+        Set<Game> result = findAllRemote(uri);
+
+        if (result == null)
+            result = gameRepository.findAllByPlatform(id);
+
+        return result;
+    }
+
+    public Set<Game> findAllRemote(String url) {
         RestTemplate restTemplate = new RestTemplate();
         Set<Game> result = null;
 
         try {
             // Get response from external api
-            Search s = restTemplate.getForObject(uri, Search.class);
+            Search s = restTemplate.getForObject(url, Search.class);
             if (s != null) {
-                result = restTemplate.getForObject(uri, Search.class).getResults();
-            }
-            // if null, fetch backup
-            if (result == null) {
-                result = gameRepository.findAllByPlatform(id);
+                result = restTemplate.getForObject(url, Search.class).getResults();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // fetch backup
-            result = gameRepository.findAllByPlatform(id);
         }
         return result;
     }
