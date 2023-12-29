@@ -9,8 +9,14 @@ services:
       POSTGRES_PASSWORD: test #This should really be changed lol
       POSTGRES_DB: GAMEDEX
       PG_DB: GAMEDEX
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+    restart: always
   backend:
     build: ./
+    restart: always
     ports:
       - 8080:8080
     environment:
@@ -21,6 +27,7 @@ services:
       - 4200:80
     links:
       - backend
+    restart: always
   search:
     image: getmeili/meilisearch:v1.5
     restart: always
@@ -36,8 +43,9 @@ services:
   meilisync:
     platform: linux/x86_64
     image: long2ice/meilisync
+    #restart: always
     volumes:
-      - ./config.yml:/meilisync/config.yml
+      - ./config.yaml:/meilisync/config.yml
 
 networks:
   gamedex:
