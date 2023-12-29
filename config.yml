@@ -1,0 +1,24 @@
+progress:
+  type: file
+
+source:
+  type: postgres
+  host: host.docker.internal
+  port: 5432
+  database: GAMEDEX
+  user: test # This should be changed
+  password: test # This should be changed
+meilisearch:
+  api_url: http://host.docker.internal:7700/
+#  api_key: 'MEILISEARCH_API_KEY'  #TODO
+  insert_size: 1000
+  insert_interval: 10
+sync:
+  - table: GAME
+    pk: GAME_ID
+    index: GAME_PKEY
+    full: true
+    fields:
+      GAME_ID:
+      name:
+      background_image:

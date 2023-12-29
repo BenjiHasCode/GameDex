@@ -14,6 +14,8 @@ services:
       - "-c"
       - "wal_level=logical"
     restart: always
+    networks:
+      - gamedex
   backend:
     build: ./
     restart: always
@@ -21,6 +23,8 @@ services:
       - 8080:8080
     environment:
       spring.datasource.jdbcUrl: "jdbc:postgresql://database:5432/GAMEDEX"
+    networks:
+      - gamedex
   frontend:
     build: angular/ .
     ports:
@@ -28,6 +32,8 @@ services:
     links:
       - backend
     restart: always
+    networks:
+      - gamedex
   search:
     image: getmeili/meilisearch:v1.5
     restart: always
@@ -45,7 +51,9 @@ services:
     image: long2ice/meilisync
     #restart: always
     volumes:
-      - ./config.yaml:/meilisync/config.yml
+      - ./config.yml:/meilisync/config.yml
+    networks:
+      - gamedex
 
 networks:
   gamedex:
