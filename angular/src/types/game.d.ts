@@ -11,7 +11,8 @@ export interface Game {
   name: string,
   description: string,
   metacritic: number,
-  background_image: string,
+  //background_image: string,
+  image: string,
   released: string,
   playtime: number,
 

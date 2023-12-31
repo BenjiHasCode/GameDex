@@ -1,6 +1,6 @@
 <span hidden>{{(searchResult | async)}}</span>
 <div>
-  <h1 class="title">GameDex</h1>
+  <h1 class="title"><!--GameDex--></h1>
   <div class="search-container">
     <mat-form-field appearance="outline" style="width: 50%">
       <input matInput placeholder="Ex. Grand Theft Auto V" [formControl]="searchControl">
@@ -10,7 +10,7 @@
   <div class="result-container">
     <div class="game-icon" *ngFor="let game of games">
       <a [routerLink]="['/games', game.id]">
-        <img src="{{game.background_image}}" alt="{{game.name}}" onerror="this.onerror=null;this.src='../../assets/temp.png';">
+        <img src="{{game.image}}" alt="{{game.name}}" onerror="this.onerror=null;this.src='../../assets/temp.png';">
         <div class="overlay" style="display: flex; justify-content: center; align-items: center;">
             {{game.name}}
         </div>

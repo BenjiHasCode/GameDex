@@ -13,7 +13,7 @@ import {Game} from "../../../types/game";
 export class SearchComponent implements OnInit {
   searchControl = new FormControl();
   searchResult: Observable<Game[]>;
-  page: number = 1;
+  page: number = 0;
   games: Game[] = [];
 
   // @ts-ignore

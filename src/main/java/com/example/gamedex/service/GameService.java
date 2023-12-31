@@ -190,7 +190,7 @@ public class GameService {
 
     public void syncMeili(Game game) {
         RestTemplate restTemplate = new RestTemplate();
-        String searchUri = "http://localhost:3000/games";
+        String searchUri = "http://localhost:8001/games";
         try {
             restTemplate.postForEntity(searchUri, game, String.class);
         } catch (RestClientException e) {
@@ -200,7 +200,7 @@ public class GameService {
 
     public void syncMeili(Set<Game> games) {
         RestTemplate restTemplate = new RestTemplate();
-        String uri = "http://localhost:3000/games/populate";
+        String uri = "http://localhost:8001/games/populate";
         try {
             restTemplate.postForEntity(uri, games, String.class);
         } catch (RestClientException e) {

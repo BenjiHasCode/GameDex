@@ -8,3 +8,9 @@
   bottom: 0;
   z-index: 2;
 }
+
+a { text-decoration: none; color: white; }
+a:visited { text-decoration: none; color: white; }
+a:hover { text-decoration: none; color: white; }
+a:focus { text-decoration: none; color: white; }
+a:hover, a:active { text-decoration: none; color: white; }

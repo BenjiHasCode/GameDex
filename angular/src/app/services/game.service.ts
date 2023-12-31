@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, Observable, of} from "rxjs";
 import {Game} from "../../types/game";
 
@@ -7,7 +7,7 @@ import {Game} from "../../types/game";
   providedIn: 'root'
 })
 export class GameService {
-  private readonly gameUrl = '/rest/games';
+  private readonly gameUrl = '/games';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -23,8 +23,13 @@ export class GameService {
   }
 
   findAllByName(name: string, page: number): Observable<Game[]> {
+    name = name.trim();
+
+    page = 0;
+    const options = name ? { params: new HttpParams().set('name', name).set('page', page) } : {};
+
     if (name != '') {
-      return this.http.get<Game[]>(`${this.gameUrl}/search=${name}&page=${page}`)
+      return this.http.get<Game[]>(`${this.gameUrl}`, options)
         .pipe(
           catchError(error => {
             console.error(error);

@@ -1,6 +1,6 @@
 {
-  "/rest": {
-    "target": "http://localhost:8080",
+  "/games": {
+    "target": "http://localhost:8001",
     "secure": false,
     "changeOrigin": true
   }

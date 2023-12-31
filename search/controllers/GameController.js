@@ -2,7 +2,6 @@ import { MeiliSearch } from 'meilisearch';
 
 const client = new MeiliSearch({
     host: 'http://localhost:7700', // TODO DOCKER URL
-    //apiKey: 'MEILISEARCH_API_KEY' // TODO
     limit: 5
   });
 
@@ -11,7 +10,7 @@ async function get(req, res) {
     const limit = 24;
     const offset = limit * req.query.page;
     const searchResult = await client.index('games')
-        .search(req.query.name, {limit: 2, offset:offset});
+        .search(req.query.name, {limit: 24, offset:offset});
 
     if (searchResult.hits.length > 0) {
         res.statusCode = 200;
