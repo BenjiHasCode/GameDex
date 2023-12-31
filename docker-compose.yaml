@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   database:
-    image: postgis/postgis:12-3.1-alpine
+    image: postgres
     ports:
       - 5432:5432
     environment:
@@ -46,14 +46,14 @@ services:
       - 7700:7700
     networks:
       - gamedex
-  meilisync:
-    platform: linux/x86_64
-    image: long2ice/meilisync
-    #restart: always
-    volumes:
-      - ./config.yml:/meilisync/config.yml
-    networks:
-      - gamedex
+#  meilisync:   TODO this is a nice to have.
+#    platform: linux/x86_64
+#    image: long2ice/meilisync
+#    restart: always
+#    volumes:
+#      - ./config.yml:/meilisync/config.yml
+#    networks:
+#      - gamedex
 
 networks:
   gamedex:

@@ -10,6 +10,9 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query("FROM Game g LEFT JOIN FETCH g.screenshots LEFT JOIN FETCH g.publishers JOIN FETCH g.developers LEFT JOIN FETCH g.tags LEFT JOIN FETCH g.genres LEFT JOIN FETCH g.stores LEFT JOIN FETCH g.platforms WHERE g.id = :id")
     Game fetch(Long id);
 
+    @Query("FROM Game g LEFT JOIN FETCH g.screenshots LEFT JOIN FETCH g.publishers JOIN FETCH g.developers LEFT JOIN FETCH g.tags LEFT JOIN FETCH g.genres LEFT JOIN FETCH g.stores LEFT JOIN FETCH g.platforms")
+    Set<Game> findALlNonLazy();
+
     @Query("FROM Game g LEFT JOIN FETCH g.screenshots LEFT JOIN FETCH g.publishers JOIN FETCH g.developers LEFT JOIN FETCH g.tags LEFT JOIN FETCH g.genres LEFT JOIN FETCH g.stores LEFT JOIN FETCH g.platforms " +
             "WHERE LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     Set<Game> findAllByName(String name);

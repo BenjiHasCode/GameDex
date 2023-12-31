@@ -34,7 +34,6 @@ public class GameApi {
                 .build();
     }
 
-    // TODO migrate this out
     @GET
     @Produces("application/json")
     @Transactional

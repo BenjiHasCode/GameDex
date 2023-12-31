@@ -1,13 +1,9 @@
 package com.example.gamedex.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.Data;
 import java.util.Set;
 
-@Getter @Setter
-@NoArgsConstructor
+@Data
 public class Search {
     private int count;
     private String next;

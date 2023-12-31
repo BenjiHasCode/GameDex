@@ -6,6 +6,7 @@ import com.example.gamedex.model.Search;
 import com.example.gamedex.repository.GameRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
@@ -43,8 +44,8 @@ public class GameService {
                     s.setGame(result);
                 }
 
-                //save backup
                 gameRepository.save(result);
+                syncMeili(result);
             }
             // if result is null (external didn't have resource, check local)
             else {
@@ -58,7 +59,7 @@ public class GameService {
         return result;
     }
 
-    // GET ALL  // todo remove
+    // GET ALL
     // We find all results with the given name
     public Set<Game> findAll(String name, int page) {
         String uri = url +
@@ -72,13 +73,19 @@ public class GameService {
         try {
             // Get response from external api
             result = restTemplate.getForObject(uri, Search.class).getResults();
-
             // check local if null
-            if (result == null) {
+            if (result == null)
                 result = gameRepository.findAllByName(name);
+            else {
+                for (Game g : result) {
+                    g.setStores(null); //this is a hack
+                    gameRepository.save(g);
+                }
+
+                syncMeili(result);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             // fetch backup
             result = gameRepository.findAllByName(name);
         }
@@ -94,6 +101,13 @@ public class GameService {
 
         if (result == null)
             result = gameRepository.findAllByGenre(id);
+        else {
+            for (Game g : result) {
+                g.setStores(null); //this is a hack
+                gameRepository.save(g);
+            }
+            syncMeili(result);
+        }
 
         return result;
     }
@@ -107,6 +121,13 @@ public class GameService {
 
         if (result == null)
             result = gameRepository.findAllByTag(id);
+        else {
+            for (Game g : result) {
+                g.setStores(null); //this is a hack
+                gameRepository.save(g);
+            }
+            syncMeili(result);
+        }
 
         return result;
     }
@@ -120,6 +141,13 @@ public class GameService {
 
         if (result == null)
             result = gameRepository.findAllByDeveloper(id);
+        else {
+            for (Game g : result) {
+                g.setStores(null); //this is a hack
+                gameRepository.save(g);
+            }
+            syncMeili(result);
+        }
 
         return result;
     }
@@ -133,6 +161,13 @@ public class GameService {
 
         if (result == null)
             result = gameRepository.findAllByPlatform(id);
+        else {
+            for (Game g : result) {
+                g.setStores(null); //this is a hack
+                gameRepository.save(g);
+            }
+            syncMeili(result);
+        }
 
         return result;
     }
@@ -145,11 +180,31 @@ public class GameService {
             // Get response from external api
             Search s = restTemplate.getForObject(url, Search.class);
             if (s != null) {
-                result = restTemplate.getForObject(url, Search.class).getResults();
+                result = s.getResults();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return result;
+    }
+
+    public void syncMeili(Game game) {
+        RestTemplate restTemplate = new RestTemplate();
+        String searchUri = "http://localhost:3000/games";
+        try {
+            restTemplate.postForEntity(searchUri, game, String.class);
+        } catch (RestClientException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void syncMeili(Set<Game> games) {
+        RestTemplate restTemplate = new RestTemplate();
+        String uri = "http://localhost:3000/games/populate";
+        try {
+            restTemplate.postForEntity(uri, games, String.class);
+        } catch (RestClientException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

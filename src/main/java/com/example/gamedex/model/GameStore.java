@@ -1,5 +1,6 @@
 package com.example.gamedex.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "GAME_STORE")
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class GameStore {
     @Id
     @Column(name = "GAME_STORE_ID")
