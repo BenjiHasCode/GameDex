@@ -4,6 +4,9 @@ import com.example.gamedex.model.Game;
 import com.example.gamedex.model.Screenshot;
 import com.example.gamedex.model.Search;
 import com.example.gamedex.repository.GameRepository;
+import com.example.gamedex.tasks.BackupTask;
+import com.example.gamedex.tasks.SearchSyncTask;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
@@ -15,12 +18,14 @@ import java.util.Set;
 @Service
 public class GameService {
     private final GameRepository gameRepository;
+    private final TaskExecutor taskExecutor;
     private final String url = "https://api.rawg.io/api/games";
     private final String key = "9de4d4ed334b45349c288a628dd2b6ae";
 
     @Inject
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, TaskExecutor taskExecutor) {
         this.gameRepository = gameRepository;
+        this.taskExecutor = taskExecutor;
     }
 
     // GET
@@ -43,9 +48,8 @@ public class GameService {
                 for(Screenshot s: screenshots) {
                     s.setGame(result);
                 }
-
-                gameRepository.save(result);
-                syncMeili(result);
+                taskExecutor.execute(new BackupTask(result, gameRepository));
+                taskExecutor.execute(new SearchSyncTask(result));
             }
             // if result is null (external didn't have resource, check local)
             else {
@@ -79,10 +83,9 @@ public class GameService {
             else {
                 for (Game g : result) {
                     g.setStores(null); //this is a hack
-                    gameRepository.save(g);
                 }
-
-                syncMeili(result);
+                taskExecutor.execute(new BackupTask(result, gameRepository));
+                taskExecutor.execute(new SearchSyncTask(result));
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -104,9 +107,9 @@ public class GameService {
         else {
             for (Game g : result) {
                 g.setStores(null); //this is a hack
-                gameRepository.save(g);
             }
-            syncMeili(result);
+            taskExecutor.execute(new BackupTask(result, gameRepository));
+            taskExecutor.execute(new SearchSyncTask(result));
         }
 
         return result;
@@ -124,9 +127,9 @@ public class GameService {
         else {
             for (Game g : result) {
                 g.setStores(null); //this is a hack
-                gameRepository.save(g);
             }
-            syncMeili(result);
+            taskExecutor.execute(new BackupTask(result, gameRepository));
+            taskExecutor.execute(new SearchSyncTask(result));
         }
 
         return result;
@@ -144,9 +147,9 @@ public class GameService {
         else {
             for (Game g : result) {
                 g.setStores(null); //this is a hack
-                gameRepository.save(g);
             }
-            syncMeili(result);
+            taskExecutor.execute(new BackupTask(result, gameRepository));
+            taskExecutor.execute(new SearchSyncTask(result));
         }
 
         return result;
@@ -164,9 +167,9 @@ public class GameService {
         else {
             for (Game g : result) {
                 g.setStores(null); //this is a hack
-                gameRepository.save(g);
             }
-            syncMeili(result);
+            taskExecutor.execute(new BackupTask(result, gameRepository));
+            taskExecutor.execute(new SearchSyncTask(result));
         }
 
         return result;

@@ -7,7 +7,8 @@ import {Game} from "../../types/game";
   providedIn: 'root'
 })
 export class GameService {
-  private readonly gameUrl = '/games';
+  private readonly searchUrl = '/games';
+  private readonly gameUrl = '/rest/games';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -29,7 +30,7 @@ export class GameService {
     const options = name ? { params: new HttpParams().set('name', name).set('page', page) } : {};
 
     if (name != '') {
-      return this.http.get<Game[]>(`${this.gameUrl}`, options)
+      return this.http.get<Game[]>(`${this.searchUrl}`, options)
         .pipe(
           catchError(error => {
             console.error(error);
