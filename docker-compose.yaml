@@ -46,6 +46,15 @@ services:
       - 7700:7700
     networks:
       - gamedex
+  cache:
+    image: redis-stack-server
+    restart: always
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - gamedex
+
 #  meilisync:   TODO this is a nice to have.
 #    platform: linux/x86_64
 #    image: long2ice/meilisync
