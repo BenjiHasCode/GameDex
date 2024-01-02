@@ -47,7 +47,7 @@ services:
     networks:
       - gamedex
   cache:
-    image: redis-stack-server
+    image: redis/redis-stack-server
     restart: always
     container_name: redis
     ports:
