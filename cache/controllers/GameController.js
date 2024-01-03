@@ -1,26 +1,52 @@
-async function get(req, res) {
-    const limit = 24;
-    const offset = limit * req.query.page;
-    const searchResult = await client.index('games')
-        .search(req.query.name, {limit: 24, offset:offset});
+import { gameRepository } from "../om/game.js";
 
-    if (searchResult.hits.length > 0) {
-        res.statusCode = 200;
-        res.send(searchResult.hits);
+async function get(req, res) {
+    const id = req.params.id;
+    const game = await gameRepository.fetch(id);
+
+    if (game) {
+        res.status = 200;
+        res.json(game);
     } else {
-        res.statusCode = 404;
-        res.send('Not found');
+        res.status = 404;
+        res.send("Not found");
     }
 }
 
 async function post(req, res) {
-    const result = await client.index('games').addDocuments(req.body);
-    
-    res.statusCode = 102;
-    res.send({ message: "processing", taskUid: result.taskUid });
+    const id = req.body.id.toString();
+    const game = await gameRepository.save(id, req.body);
+
+    res.statusCode = 200;
+    res.type('application/json');
+    res.send(game);
+}
+
+async function update(req, res) {
+    const id = req.params.id;
+    let game = await gameRepository.fetch(id);
+
+    if (game) {
+        game = await gameRepository.save(id, req.body);
+        res.status = 200;
+        res.json(game);
+    } else {
+        res.status = 404;
+        res.send("Not found");
+    }
+}
+
+async function remove(req, res) {
+    const id = req.params.id;
+    await gameRepository.remove(id);
+
+    res.type('application/json');
+    res.send('"OK"');
 }
 
 export default {
+    post,
     get,
-    post
+    update,
+    remove
 }
