@@ -9,16 +9,13 @@ services:
       POSTGRES_PASSWORD: test #This should really be changed lol
       POSTGRES_DB: GAMEDEX
       PG_DB: GAMEDEX
-    command:
-      - "postgres"
-      - "-c"
-      - "wal_level=logical"
     restart: always
     networks:
       - gamedex
   backend:
     build: ./
     restart: always
+    container_name: game_service
     ports:
       - 8080:8080
     environment:
@@ -26,18 +23,37 @@ services:
     networks:
       - gamedex
   frontend:
-    build: angular/ .
+    build: angular/.
+    container_name: angular
     ports:
       - 4200:80
-    links:
-      - backend
     restart: always
     networks:
       - gamedex
   search:
+    build: search/.
+    container_name: search_service
+    ports:
+      - 8001:8001
+    restart: always
+    networks:
+      - gamedex
+    depends_on:
+      - meilisearch
+  cache:
+    build: cache/.
+    container_name: cache_service
+    ports:
+      - 8002:8002
+    restart: always
+    networks:
+      - gamedex
+    depends_on:
+      - redis
+  meilisearch:
     image: getmeili/meilisearch:v1.5
     restart: always
-    container_name: search
+    container_name: meilisearch
     environment:
       - MEILI_HTTP_PAYLOAD_SIZE_LIMIT=1048576000 # 1 gigabyte
     volumes:
@@ -46,10 +62,9 @@ services:
       - 7700:7700
     networks:
       - gamedex
-  cache:
+  redis:
     image: redis-stack-server
     restart: always
-    container_name: redis
     ports:
       - 6379:6379
     networks:
