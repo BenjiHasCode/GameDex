@@ -63,8 +63,9 @@ services:
     networks:
       - gamedex
   redis:
-    image: redis-stack-server
+    image: redis/redis-stack-server
     restart: always
+    container_name: redis
     ports:
       - 6379:6379
     networks:

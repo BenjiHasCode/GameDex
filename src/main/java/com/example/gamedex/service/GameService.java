@@ -5,6 +5,7 @@ import com.example.gamedex.model.Screenshot;
 import com.example.gamedex.model.Search;
 import com.example.gamedex.repository.GameRepository;
 import com.example.gamedex.tasks.BackupTask;
+import com.example.gamedex.tasks.CacheTask;
 import com.example.gamedex.tasks.SearchSyncTask;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class GameService {
                 }
                 taskExecutor.execute(new BackupTask(result, gameRepository));
                 taskExecutor.execute(new SearchSyncTask(result));
+                taskExecutor.execute(new CacheTask(result));
             }
             // if result is null (external didn't have resource, check local)
             else {
