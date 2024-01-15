@@ -71,7 +71,7 @@ services:
     networks:
       - gamedex
 
-#  meilisync:   TODO this is a nice to have.
+#  meilisync:   TODO this is a nice to have
 #    platform: linux/x86_64
 #    image: long2ice/meilisync
 #    restart: always
