@@ -32,7 +32,7 @@ RUN npm run build --prod
 FROM nginx:alpine
 
 # Copy the built app from the previous stage
-COPY --from=build /usr/src/app/dist/your-angular-app /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/GameDex /usr/share/nginx/html
 
 # Expose the default port for nginx
 EXPOSE 80

@@ -1,8 +1,7 @@
 import { MeiliSearch } from 'meilisearch';
 
 const client = new MeiliSearch({
-    host: 'http://localhost:7700', // TODO DOCKER URL
-    limit: 5
+    host: process.env.MEILI_URL || 'http://meilisearch:7700'
   });
 
 

@@ -2,15 +2,6 @@ import { Schema, Repository } from "redis-om";
 import { redis } from "./redis.js";
 
 /* create a Schema for Game */
-/*const gameSchema = new Schema(Game, {
-    id: { type: 'number' },
-    name: { type: 'string' },
-    description: { type: 'string' },
-    metacritic: { type: 'number' },
-    background_image: { type: 'string' },
-    released: { type: 'date' },
-    playtime: { type: 'number' }
-}); */
 const schema = new Schema('game', {
     // a bit of a hack, but since embedded data
     // is being worked on, we will have to do with this for now
